@@ -5,6 +5,7 @@ import com.danielandrej.treasure_hunt.player.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,23 +27,11 @@ public class GameController {
     }
 
 
-    @GetMapping(value="game/guess", params={"answer"}, produces="application/json")
-    public boolean answerIsCorrect(@RequestParam String answer, HttpServletRequest request) {
+    @PostMapping(value="game/answer", params={"qr_code"}, produces="application/json")
+    public boolean answerIsCorrect(@RequestParam String qr_code, HttpServletRequest request) {
         Optional<Player> player = playerService.getPlayerFromRequest(request);
         if (player.isPresent()) {
-            boolean correct = gameService.answerIsCorrect(player.get(), answer);
-            if (correct) {
-//                if (player.get().getGame().isFinished()) {
-//                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Game is finished");
-                if (player.get().getAnswers().contains(answer)) {
-                    throw new ResponseStatusException(HttpStatus.CONFLICT, "You already answered this question");
-                }
-                playerService.addAnswer(player.get(), answer);
-                if (player.get().getAnswers().size() == player.get().getGame().getAnswers().size()) {
-                    System.out.println("Game is finished");
-                }
-            }
-            return correct;
+            return gameService.submitTask(player.get(), qr_code);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
         }

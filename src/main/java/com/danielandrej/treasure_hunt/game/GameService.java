@@ -1,8 +1,13 @@
 package com.danielandrej.treasure_hunt.game;
 
 import com.danielandrej.treasure_hunt.player.Player;
+import com.danielandrej.treasure_hunt.player.PlayerRepository;
+import com.danielandrej.treasure_hunt.player.PlayerService;
+import com.danielandrej.treasure_hunt.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +17,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameService {
 
     private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, PlayerRepository playerRepository) {
         this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
+
     }
 
     public List<Game> getRooms() {
@@ -50,8 +58,31 @@ public class GameService {
         return gameRepository.save(oldGame);
     }
 
-    public boolean answerIsCorrect(Player player, String answer) {
+    public boolean submitTask(Player player, String answer) {
         Game game = player.getGame();
-        return game.getAnswers().contains(answer);
+        // if game finished, throw exception
+//        if (game.isFinished()) {
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Game is finished");
+//        }
+        Optional<Task> completedTask = game.getTasks().stream().filter(t -> t.getQrCodeValue().equals(answer)).findFirst();
+        // TODO: Custom exceptions
+        if (completedTask.isPresent()) {
+            if (player.getCompletedTasks().contains(completedTask.get())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "You already answered this question");
+            }
+
+            player.addCompletedTask(completedTask.get());
+            playerRepository.save(player);
+
+            //if all tasks are completed, finish game
+            if (player.getCompletedTasks().size() == game.getTasks().size()) {
+//                game.setFinished(true);
+                System.out.println("Game finished");
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

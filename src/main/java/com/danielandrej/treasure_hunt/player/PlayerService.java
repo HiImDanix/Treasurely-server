@@ -29,10 +29,4 @@ public class PlayerService {
         playerRepository.save(player);
     }
 
-    public void addAnswer(Player player, String answer) {
-        player.addAnswer(answer);
-        playerRepository.save(player);
-    }
-
-
 }

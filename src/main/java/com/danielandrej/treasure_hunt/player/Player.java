@@ -1,10 +1,12 @@
 package com.danielandrej.treasure_hunt.player;
 
 import com.danielandrej.treasure_hunt.game.Game;
+import com.danielandrej.treasure_hunt.task.Task;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -17,9 +19,8 @@ public class Player {
     @ManyToOne(cascade=CascadeType.ALL)
     @JsonBackReference
     private Game game;
-
-    @ElementCollection
-    private List<String> answers;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Task> completedTasks = new HashSet<>();
 
     public Player(String sessionID, String name, Game game) {
         this.sessionID = sessionID;
@@ -58,17 +59,18 @@ public class Player {
         return this;
     }
 
-    public List<String> getAnswers() {
-        return answers;
+    public Set<Task> getCompletedTasks() {
+        return completedTasks;
     }
 
-    public Player setAnswers(List<String> answers) {
-        this.answers = answers;
+    public Player setCompletedTasks(Set<Task> completedTasks) {
+        this.completedTasks.retainAll(completedTasks);
+        this.completedTasks.addAll(completedTasks);
         return this;
     }
 
-    public Player addAnswer(String answer) {
-        answers.add(answer);
+    public Player addCompletedTask(Task task) {
+        completedTasks.add(task);
         return this;
     }
 }

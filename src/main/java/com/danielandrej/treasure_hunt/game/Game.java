@@ -2,10 +2,11 @@ package com.danielandrej.treasure_hunt.game;
 
 
 import com.danielandrej.treasure_hunt.player.Player;
+import com.danielandrej.treasure_hunt.task.Task;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,13 +30,12 @@ public class Game {
     @Column(nullable = false)
     private String name;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ElementCollection
-    private Set<String> answers;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Task> tasks = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
     @JsonManagedReference
-    private Set<Player> players;
+    private Set<Player> players = new HashSet<>();
 
     public Game(String name, String code) {
         this.name = name;
@@ -45,12 +45,18 @@ public class Game {
     public Game() {
     }
 
-    public Set<String> getAnswers() {
-        return answers;
+    public Set<Task> getTasks() {
+        return tasks;
     }
 
-    public Game setAnswers(Set<String> answers) {
-        this.answers = answers;
+    public Game setTasks(Set<Task> tasks) {
+        this.tasks.retainAll(tasks);
+        this.tasks.addAll(tasks);
+        return this;
+    }
+
+    public Game addTask(Task task) {
+        this.tasks.add(task);
         return this;
     }
 
@@ -77,7 +83,8 @@ public class Game {
     }
 
     public Game setPlayers(Set<Player> players) {
-        this.players = players;
+        this.players.retainAll(players);
+        this.players.addAll(players);
         return this;
     }
 
@@ -94,4 +101,6 @@ public class Game {
         this.name = name;
         return this;
     }
+
+
 }
