@@ -1,4 +1,4 @@
-package com.danielandrej.treasure_hunt.game;
+package com.danielandrej.treasure_hunt.repositories.shared;
 
 import java.security.SecureRandom;
 import java.util.Locale;

@@ -1,12 +1,11 @@
-package com.danielandrej.treasure_hunt.game;
+package com.danielandrej.treasure_hunt.models;
 
 
-import com.danielandrej.treasure_hunt.player.Player;
-import com.danielandrej.treasure_hunt.task.Task;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -37,11 +36,36 @@ public class Game {
     @JsonManagedReference
     private Set<Player> players = new HashSet<>();
 
-    public Game(String name) {
+    public Game(String name, String code) {
+        this.code = code;
         this.name = name;
     }
 
     public Game() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return id == game.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", tasks=" + tasks +
+                ", players=" + players +
+                '}';
     }
 
     public Set<Task> getTasks() {

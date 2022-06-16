@@ -1,7 +1,9 @@
-package com.danielandrej.treasure_hunt.player;
+package com.danielandrej.treasure_hunt.controllers;
 
-import com.danielandrej.treasure_hunt.game.Game;
-import com.danielandrej.treasure_hunt.game.GameService;
+import com.danielandrej.treasure_hunt.models.Game;
+import com.danielandrej.treasure_hunt.models.Player;
+import com.danielandrej.treasure_hunt.services.GameService;
+import com.danielandrej.treasure_hunt.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +13,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @RestController
-public class PlayerController {
-
+public class RoomController {
 
     private final PlayerService playerService;
     private final GameService gameService;
 
     @Autowired
-    public PlayerController(PlayerService playerService, GameService gameService) {
+    public RoomController(PlayerService playerService, GameService gameService) {
         this.playerService = playerService;
         this.gameService = gameService;
     }
@@ -67,8 +68,7 @@ public class PlayerController {
         if (player.isPresent()) {
             return player.get().getGame();
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
         }
     }
-
 }

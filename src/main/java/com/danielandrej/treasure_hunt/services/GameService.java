@@ -1,8 +1,11 @@
-package com.danielandrej.treasure_hunt.game;
+package com.danielandrej.treasure_hunt.services;
 
-import com.danielandrej.treasure_hunt.player.Player;
-import com.danielandrej.treasure_hunt.player.PlayerRepository;
-import com.danielandrej.treasure_hunt.task.Task;
+import com.danielandrej.treasure_hunt.repositories.shared.RandomString;
+import com.danielandrej.treasure_hunt.models.Game;
+import com.danielandrej.treasure_hunt.models.Player;
+import com.danielandrej.treasure_hunt.repositories.PlayerRepository;
+import com.danielandrej.treasure_hunt.models.Task;
+import com.danielandrej.treasure_hunt.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

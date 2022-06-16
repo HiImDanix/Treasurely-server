@@ -1,5 +1,7 @@
-package com.danielandrej.treasure_hunt.player;
+package com.danielandrej.treasure_hunt.services;
 
+import com.danielandrej.treasure_hunt.models.Player;
+import com.danielandrej.treasure_hunt.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

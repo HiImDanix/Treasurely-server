@@ -1,11 +1,10 @@
-package com.danielandrej.treasure_hunt.player;
+package com.danielandrej.treasure_hunt.models;
 
-import com.danielandrej.treasure_hunt.game.Game;
-import com.danielandrej.treasure_hunt.task.Task;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -30,6 +29,29 @@ public class Player {
 
     public Player() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(sessionID, player.sessionID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sessionID);
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "sessionID='" + sessionID + '\'' +
+                ", name='" + name + '\'' +
+                ", game=" + game +
+                ", completedTasks=" + completedTasks +
+                '}';
     }
 
     public String getSessionID() {

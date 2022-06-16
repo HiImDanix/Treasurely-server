@@ -1,10 +1,10 @@
-package com.danielandrej.treasure_hunt.game;
+package com.danielandrej.treasure_hunt.controllers;
 
-import com.danielandrej.treasure_hunt.player.Player;
-import com.danielandrej.treasure_hunt.player.PlayerService;
+import com.danielandrej.treasure_hunt.services.GameService;
+import com.danielandrej.treasure_hunt.models.Player;
+import com.danielandrej.treasure_hunt.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,14 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RestController
-public class GameController {
+public class GameplayController {
 
 
     private final GameService gameService;
     private final PlayerService playerService;
 
     @Autowired
-    public GameController(GameService gameService, PlayerService playerService) {
+    public GameplayController(GameService gameService, PlayerService playerService) {
         this.gameService = gameService;
         this.playerService = playerService;
     }

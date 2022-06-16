@@ -1,16 +1,15 @@
 package com.danielandrej.treasure_hunt;
 
-import com.danielandrej.treasure_hunt.game.Game;
-import com.danielandrej.treasure_hunt.game.GameRepository;
-import com.danielandrej.treasure_hunt.task.Task;
-import com.danielandrej.treasure_hunt.task.TaskRepository;
+import com.danielandrej.treasure_hunt.models.Game;
+import com.danielandrej.treasure_hunt.repositories.GameRepository;
+import com.danielandrej.treasure_hunt.models.Task;
+import com.danielandrej.treasure_hunt.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -25,8 +24,8 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        Game game1 = new Game("My game 1");
-        Game game2 = new Game("Jason's game");
+        Game game1 = new Game("My game 1", "AH4K3");
+        Game game2 = new Game("Jason's game", "EJ4K3");
         gameRepository.saveAll(
                 List.of(game1, game2)
         );
