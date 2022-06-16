@@ -42,7 +42,7 @@ public class OrgGameController {
     @PostMapping(value="games", produces="application/json")
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
         Game newGame = gameService.createGame(game);
-        return new ResponseEntity<>(newGame, org.springframework.http.HttpStatus.CREATED);
+        return new ResponseEntity<>(newGame, HttpStatus.CREATED);
     }
 
     @DeleteMapping(value="games/{game_id}", produces="application/json")
@@ -61,9 +61,24 @@ public class OrgGameController {
         Optional<Game> oldGame = gameService.findGameByID(gameID);
         if (oldGame.isPresent()) {
             Game newGame = gameService.updateGame(oldGame.get(), game);
-            return new ResponseEntity<>(newGame, org.springframework.http.HttpStatus.OK);
+            return new ResponseEntity<>(newGame, HttpStatus.OK);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with this ID was not found");
         }
     }
+
+    @PostMapping(value="games/{game_id}/start", produces="application/json")
+    public ResponseEntity<Game> startGame(@PathVariable("game_id") Long gameID) {
+        Optional<Game> game = gameService.findGameByID(gameID);
+        if (game.isPresent()) {
+            if (game.get().getStatus() == Game.Status.IN_PROGRESS) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The game has already started");
+            }
+            gameService.updateStatus(game.get(), Game.Status.IN_PROGRESS);
+            return new ResponseEntity<>(game.get(), HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with this ID was not found");
+        }
+    }
+
 }

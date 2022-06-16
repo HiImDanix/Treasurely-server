@@ -11,6 +11,15 @@ import java.util.Set;
 @Entity
 @Table
 public class Game {
+
+    /* Status of the game */
+    public enum Status {
+        NOT_STARTED,
+        IN_PROGRESS,
+        PAUSED,
+        FINISHED
+    }
+
     @Id
     @SequenceGenerator(
             name = "room_sequence",
@@ -29,12 +38,14 @@ public class Game {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
     private Set<Task> tasks = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
     @JsonManagedReference
     private Set<Player> players = new HashSet<>();
+
+    private Status status = Status.NOT_STARTED;
 
     public Game(String name, String code) {
         this.code = code;
@@ -125,5 +136,12 @@ public class Game {
         return this;
     }
 
+    public Status getStatus() {
+        return status;
+    }
 
+    public Game setStatus(Status status) {
+        this.status = status;
+        return this;
+    }
 }

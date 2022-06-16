@@ -30,14 +30,12 @@ public class DataLoader implements ApplicationRunner {
                 List.of(game1, game2)
         );
 
-        Task task1 = new Task("answer1");
-        Task task2 = new Task("answer2");
+        Task task1 = new Task(game2, "answer1");
+        Task task2 = new Task(game2, "answer2");
         taskRepository.saveAll(
                 List.of(task1, task2)
         );
 
-        game2.addTask(task1);
-        game2.addTask(task2);
         gameRepository.save(game2);
 
     }

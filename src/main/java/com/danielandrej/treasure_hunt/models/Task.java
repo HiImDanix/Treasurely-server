@@ -1,5 +1,10 @@
 package com.danielandrej.treasure_hunt.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -10,11 +15,15 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
-    @Column
-
+    @Column(nullable = false)
     private String qrCodeValue;
 
-    public Task(String qrCodeValue) {
+    @JsonBackReference
+    @ManyToOne
+    private Game game;
+
+    public Task(Game game, String qrCodeValue) {
+        this.game = game;
         this.qrCodeValue = qrCodeValue;
     }
 
@@ -56,6 +65,15 @@ public class Task {
 
     public Task setQrCodeValue(String qrCodeValue) {
         this.qrCodeValue = qrCodeValue;
+        return this;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Task setGame(Game game) {
+        this.game = game;
         return this;
     }
 }

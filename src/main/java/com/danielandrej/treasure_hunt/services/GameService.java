@@ -60,12 +60,19 @@ public class GameService {
         return gameRepository.save(oldGame);
     }
 
+    // update status of game
+    public Game updateStatus(Game game, Game.Status status) {
+        game.setStatus(status);
+        return gameRepository.save(game);
+    }
+
     public boolean submitTask(Player player, String answer) {
         Game game = player.getGame();
-        // if game finished, throw exception
-//        if (game.isFinished()) {
-//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Game is finished");
-//        }
+         // if game not in progress, throw exception
+        if (game.getStatus() != Game.Status.IN_PROGRESS) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game is not in progress");
+        }
+
         Optional<Task> completedTask = game.getTasks().stream().filter(t -> t.getQrCodeValue().equals(answer)).findFirst();
         // TODO: Custom exceptions
         if (completedTask.isPresent()) {
@@ -78,8 +85,7 @@ public class GameService {
 
             //if all tasks are completed, finish game
             if (player.getCompletedTasks().size() == game.getTasks().size()) {
-//                game.setFinished(true);
-                System.out.println("Game finished");
+                updateStatus(game, Game.Status.FINISHED);
             }
 
             return true;
