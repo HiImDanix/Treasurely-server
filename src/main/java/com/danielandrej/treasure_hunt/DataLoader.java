@@ -25,8 +25,8 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        Game game1 = new Game("My game 1", "A4HK6M5");
-        Game game2 = new Game("Jason's game", "B6S6GST");
+        Game game1 = new Game("My game 1");
+        Game game2 = new Game("Jason's game");
         gameRepository.saveAll(
                 List.of(game1, game2)
         );

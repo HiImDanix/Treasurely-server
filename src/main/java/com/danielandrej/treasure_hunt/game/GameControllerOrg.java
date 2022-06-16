@@ -39,9 +39,6 @@ public class GameControllerOrg {
 
     @PostMapping(value="games", produces="application/json")
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
-        if (gameService.findGameByCode(game.getCode()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game with this code already exists");
-        }
         Game newGame = gameService.createGame(game);
         return new ResponseEntity<>(newGame, org.springframework.http.HttpStatus.CREATED);
     }

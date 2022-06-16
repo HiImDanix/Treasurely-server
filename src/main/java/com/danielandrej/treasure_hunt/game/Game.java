@@ -37,9 +37,8 @@ public class Game {
     @JsonManagedReference
     private Set<Player> players = new HashSet<>();
 
-    public Game(String name, String code) {
+    public Game(String name) {
         this.name = name;
-        this.code = code;
     }
 
     public Game() {

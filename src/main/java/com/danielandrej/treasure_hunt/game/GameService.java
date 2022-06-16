@@ -2,7 +2,6 @@ package com.danielandrej.treasure_hunt.game;
 
 import com.danielandrej.treasure_hunt.player.Player;
 import com.danielandrej.treasure_hunt.player.PlayerRepository;
-import com.danielandrej.treasure_hunt.player.PlayerService;
 import com.danielandrej.treasure_hunt.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class GameService {
     }
 
     public Optional<Game> findGameByCode(String code) {
-        return gameRepository.findGameByCode(code);
+        return gameRepository.findByCode(code);
     }
 
     public Optional<Game> findGameByID(Long gameID) {
