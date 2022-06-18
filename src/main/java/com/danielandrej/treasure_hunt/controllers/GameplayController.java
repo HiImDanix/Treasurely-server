@@ -27,7 +27,7 @@ public class GameplayController {
     }
 
 
-    @PostMapping(value="game/answer", params={"qr_code"}, produces="application/json")
+    @PostMapping(value="games/answer", params={"qr_code"}, produces="application/json")
     public boolean answerIsCorrect(@RequestParam String qr_code, HttpServletRequest request) {
         Optional<Player> player = playerService.getPlayerFromRequest(request);
         if (player.isPresent()) {

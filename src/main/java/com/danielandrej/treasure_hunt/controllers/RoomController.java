@@ -24,26 +24,32 @@ public class RoomController {
         this.gameService = gameService;
     }
 
-    @PostMapping(value="/game/{game_id}/join", params="name", produces="application/json")
-    public String joinGame(@PathVariable("game_id") Long gameID, @RequestParam String name) {
+    @PostMapping(value="/games/{game_id}/join", params="name, code", produces="application/json")
+    public String joinGame(@PathVariable("game_id") Long gameID, @RequestParam String name, @RequestParam String code) {
         Optional<Game> game = gameService.findGameByID(gameID);
-        if (game.isPresent()) {
-            String sessionID = RequestContextHolder.currentRequestAttributes().getSessionId();
-            Optional<Player> existingPlayer = playerService.findPlayerBySessionID(sessionID);
-            if (existingPlayer.isPresent()) {
-                existingPlayer.get().setGame(game.get());
-                playerService.savePlayer(existingPlayer.get());
-            } else {
-                Player player = new Player(sessionID, name, game.get());
-                playerService.savePlayer(player);
-            }
-            return "OK";
-        } else {
+
+        if (!game.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
         }
+
+        if (!game.get().getCode().equals(code)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid game code");
+        }
+
+        String sessionID = RequestContextHolder.currentRequestAttributes().getSessionId();
+        Optional<Player> existingPlayer = playerService.findPlayerBySessionID(sessionID);
+
+        if (existingPlayer.isPresent()) {
+            existingPlayer.get().setGame(game.get());
+            playerService.savePlayer(existingPlayer.get());
+        } else {
+            Player player = new Player(sessionID, name, game.get());
+            playerService.savePlayer(player);
+        }
+        return "OK";
     }
 
-    @DeleteMapping(value="/game/{game_id}/join", produces="application/json")
+    @DeleteMapping(value="/games/{game_id}/join", produces="application/json")
     public String leaveGame(@PathVariable("game_id") Long gameID) {
         Optional<Game> game = gameService.findGameByID(gameID);
         if (game.isPresent()) {
@@ -61,7 +67,7 @@ public class RoomController {
         }
     }
 
-    @GetMapping(value="/game/current", produces="application/json")
+    @GetMapping(value="/current_game", produces="application/json")
     public Game getCurrentGame() {
         String sessionID = RequestContextHolder.currentRequestAttributes().getSessionId();
         Optional<Player> player = playerService.findPlayerBySessionID(sessionID);
