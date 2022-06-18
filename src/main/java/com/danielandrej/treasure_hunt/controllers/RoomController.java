@@ -66,15 +66,4 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
         }
     }
-
-    @GetMapping(value="/current_game", produces="application/json")
-    public Game getCurrentGame() {
-        String sessionID = RequestContextHolder.currentRequestAttributes().getSessionId();
-        Optional<Player> player = playerService.findPlayerBySessionID(sessionID);
-        if (player.isPresent()) {
-            return player.get().getGame();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
-        }
-    }
 }
