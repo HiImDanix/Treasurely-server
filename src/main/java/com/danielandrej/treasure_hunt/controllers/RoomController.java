@@ -24,8 +24,9 @@ public class RoomController {
         this.gameService = gameService;
     }
 
-    @PostMapping(value="/games/{game_id}/join", params="name, code", produces="application/json")
-    public String joinGame(@PathVariable("game_id") Long gameID, @RequestParam String name, @RequestParam String code) {
+    @RequestMapping(value="/games/{game_id}/join", method = RequestMethod.POST)
+    public String joinGame(@PathVariable("game_id") Long gameID,
+    		@RequestParam(value="name") String name, @RequestParam(value="code") String code) {
         Optional<Game> game = gameService.findGameByID(gameID);
 
         if (!game.isPresent()) {
@@ -38,7 +39,8 @@ public class RoomController {
 
         String sessionID = RequestContextHolder.currentRequestAttributes().getSessionId();
         Optional<Player> existingPlayer = playerService.findPlayerBySessionID(sessionID);
-
+        
+        
         if (existingPlayer.isPresent()) {
             existingPlayer.get().setGame(game.get());
             playerService.savePlayer(existingPlayer.get());
@@ -46,6 +48,7 @@ public class RoomController {
             Player player = new Player(sessionID, name, game.get());
             playerService.savePlayer(player);
         }
+        
         return "OK";
     }
 
