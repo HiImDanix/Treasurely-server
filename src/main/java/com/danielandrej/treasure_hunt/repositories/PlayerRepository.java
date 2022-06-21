@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface PlayerRepository extends JpaRepository<Player, String> {
 
     @Query("SELECT s from Player s WHERE s.playerSessionID = ?1")
-    Optional<Player> findPlayermBySessionID(String sessionID);
+    Optional<Player> findPlayerBySessionID(String sessionID);
 
 }

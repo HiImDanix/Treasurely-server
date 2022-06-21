@@ -27,19 +27,21 @@ public class GameplayController {
     }
 
 
-    @GetMapping(value="/current_game", produces="application/json")
-    public Game getCurrentGame(HttpServletRequest request) {
-        Optional<Player> player = playerService.getPlayerFromRequest(request);
-        if (player.isPresent()) {
-            return player.get().getGame();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
-        }
-    }
+//    @GetMapping(value="/current_game", produces="application/json")
+//    public Game getCurrentGame(HttpServletRequest request) {
+//        Optional<Player> player = playerService.getPlayerFromRequest(request);
+//        if (player.isPresent()) {
+//            return player.get().getGame();
+//        } else {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
+//        }
+//    }
 
-    @PostMapping(value="games/{game_id}/submit", params={"qr_code"}, produces="application/json")
-    public boolean isAnswerCorrect(@PathVariable Long game_id, @RequestParam String qr_code, HttpServletRequest request) {
-        Optional<Player> player = playerService.getPlayerFromRequest(request);
+    @PostMapping(value="games/{game_id}/submit", produces="application/json")
+    public boolean isAnswerCorrect(@PathVariable Long game_id,
+                                   @RequestParam String qr_code,
+                                   HttpServletRequest request, @RequestParam String player_session_id) {
+        Optional<Player> player = playerService.findPlayerBySessionID(player_session_id);
 
         if (!player.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");

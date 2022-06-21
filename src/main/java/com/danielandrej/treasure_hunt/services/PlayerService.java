@@ -18,13 +18,8 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public Optional<Player> getPlayerFromRequest(HttpServletRequest request) {
-        String sessionID = request.getSession().getId();
-        return findPlayerBySessionID(sessionID);
-    }
-
     public Optional<Player> findPlayerBySessionID(String sessionID) {
-        return playerRepository.findPlayermBySessionID(sessionID);
+        return playerRepository.findPlayerBySessionID(sessionID);
     }
 
     public void savePlayer(Player player) {
