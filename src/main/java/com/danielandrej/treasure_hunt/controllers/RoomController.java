@@ -24,9 +24,10 @@ public class RoomController {
         this.gameService = gameService;
     }
 
-    @RequestMapping(value="/games/{game_id}/join", method = RequestMethod.POST)
-    public String joinGame(@PathVariable("game_id") Long gameID,
-    		@RequestParam(value="name") String name, @RequestParam(value="code") String code) {
+    @PostMapping(value="/games/{game_id}/player")
+    public Player joinGame(@PathVariable("game_id") Long gameID,
+    		@RequestParam(value="name") String name,
+            @RequestParam(value="code") String code) {
         Optional<Game> game = gameService.findGameByID(gameID);
 
         if (!game.isPresent()) {
@@ -37,19 +38,24 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid game code");
         }
 
-        String sessionID = RequestContextHolder.currentRequestAttributes().getSessionId();
-        Optional<Player> existingPlayer = playerService.findPlayerBySessionID(sessionID);
-        
-        
-        if (existingPlayer.isPresent()) {
-            existingPlayer.get().setGame(game.get());
-            playerService.savePlayer(existingPlayer.get());
+        Player player = new Player(name, game.get());
+        playerService.savePlayer(player);
+
+        return player;
+
+    }
+
+    @GetMapping(value="/players")
+    public Player joinGameAsExistingPlayer(@RequestParam(value="player_session_id") String playerSessionID) {
+
+        Optional<Player> player = playerService.findPlayerBySessionID(playerSessionID);
+
+        if (player.isPresent()) {
+            return player.get();
         } else {
-            Player player = new Player(sessionID, name, game.get());
-            playerService.savePlayer(player);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found");
+
         }
-        
-        return "OK";
     }
 
     @DeleteMapping(value="/games/{game_id}/join", produces="application/json")

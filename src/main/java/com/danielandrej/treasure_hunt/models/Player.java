@@ -1,6 +1,7 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,8 +13,13 @@ import java.util.Set;
 public class Player {
 
     @Id
-    @Column(nullable = false)
-    private String sessionID;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private String playerSessionID;
     private String name;
     @ManyToOne(cascade=CascadeType.ALL)
     @JsonBackReference
@@ -21,8 +27,7 @@ public class Player {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Task> completedTasks = new HashSet<>();
 
-    public Player(String sessionID, String name, Game game) {
-        this.sessionID = sessionID;
+    public Player(String name, Game game) {
         this.name = name;
         this.game = game;
     }
@@ -36,30 +41,30 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return Objects.equals(sessionID, player.sessionID);
+        return Objects.equals(playerSessionID, player.playerSessionID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionID);
+        return Objects.hash(playerSessionID);
     }
 
     @Override
     public String toString() {
         return "Player{" +
-                "sessionID='" + sessionID + '\'' +
+                "sessionID='" + playerSessionID + '\'' +
                 ", name='" + name + '\'' +
                 ", game=" + game +
                 ", completedTasks=" + completedTasks +
                 '}';
     }
 
-    public String getSessionID() {
-        return sessionID;
+    public String getPlayerSessionID() {
+        return playerSessionID;
     }
 
-    public Player setSessionID(String sessionID) {
-        this.sessionID = sessionID;
+    public Player setPlayerSessionID(String sessionID) {
+        this.playerSessionID = sessionID;
         return this;
     }
 

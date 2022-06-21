@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, String> {
 
-    @Query("SELECT s from Player s WHERE s.sessionID = ?1")
+    @Query("SELECT s from Player s WHERE s.playerSessionID = ?1")
     Optional<Player> findPlayermBySessionID(String sessionID);
 
 }
