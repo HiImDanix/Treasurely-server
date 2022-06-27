@@ -17,6 +17,30 @@ public class RoomController {
 
     private final PlayerService playerService;
     private final GameService gameService;
+    
+    private boolean checkGameCode(Optional<Game> game, String code) {
+    	boolean retVal = true;
+    	
+    	if (checkGame(game)) {
+    		if (!game.get().getCode().equals(code)) {
+            	retVal = false;
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid game code");
+            }
+    	}
+        
+        return retVal;
+    }
+    
+    private boolean checkGame(Optional<Game> game) {
+    	boolean retVal = true;
+    	
+    	if (!game.isPresent()) {
+    		retVal = false;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
+        }
+    	
+    	return retVal;
+    }
 
     @Autowired
     public RoomController(PlayerService playerService, GameService gameService) {
@@ -30,13 +54,8 @@ public class RoomController {
             @RequestParam(value="code") String code) {
         Optional<Game> game = gameService.findGameByID(gameID);
 
-        if (!game.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
-        }
-
-        if (!game.get().getCode().equals(code)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid game code");
-        }
+        checkGameCode(game, code);
+        
 
         Player player = new Player(name, game.get());
         playerService.savePlayer(player);
@@ -45,12 +64,16 @@ public class RoomController {
 
     }
 
-    @GetMapping(value="/players")
-    public Player joinGameAsExistingPlayer(@RequestParam(value="player_session_id") String playerSessionID) {
+    @GetMapping(value="/games/{game_id}/players")
+    public Player joinGameAsExistingPlayer(@PathVariable("game_id") Long gameID,
+    		@RequestParam(value="player_session_id") String playerSessionID) {
 
+    	Optional<Game> game = gameService.findGameByID(gameID);
         Optional<Player> player = playerService.findPlayerBySessionID(playerSessionID);
+        
+        checkGame(game);
 
-        if (player.isPresent()) {
+        if (player.isPresent() && game.get().getPlayers().contains(player.get())) {
             return player.get();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found");
