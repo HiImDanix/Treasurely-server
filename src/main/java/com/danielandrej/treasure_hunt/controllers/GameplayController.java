@@ -26,29 +26,20 @@ public class GameplayController {
         this.playerService = playerService;
     }
 
-
-//    @GetMapping(value="/current_game", produces="application/json")
-//    public Game getCurrentGame(HttpServletRequest request) {
-//        Optional<Player> player = playerService.getPlayerFromRequest(request);
-//        if (player.isPresent()) {
-//            return player.get().getGame();
-//        } else {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
-//        }
-//    }
-
+    /**
+     * Submit a QR code answer.
+     * @param qr_code
+     * @param player_session_id
+     * @throws ResponseStatusException 404 if player is not in game
+     * @return
+     */
     @PostMapping(value="games/{game_id}/submit", produces="application/json")
-    public boolean isAnswerCorrect(@PathVariable Long game_id,
-                                   @RequestParam String qr_code,
-                                   HttpServletRequest request, @RequestParam String player_session_id) {
+    public boolean isAnswerCorrect(@RequestParam String qr_code,
+                                   @RequestParam String player_session_id) {
         Optional<Player> player = playerService.findPlayerBySessionID(player_session_id);
 
         if (!player.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
-        }
-
-        if (player.get().getGame().getId() != game_id) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in this game");
         }
 
         return gameService.submitTask(player.get(), qr_code);

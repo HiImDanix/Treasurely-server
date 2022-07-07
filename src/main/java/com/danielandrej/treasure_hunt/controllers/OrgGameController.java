@@ -22,29 +22,55 @@ public class OrgGameController {
         this.gameService = gameService;
     }
 
+    /**
+     * Get all games
+     * @return List of games
+     */
     @GetMapping(value="games", produces="application/json")
     public List<Game> findGames() {
         return gameService.getRooms();
     }
 
+    /**
+     * Get game by code
+     * @param code Game code
+     * @throws ResponseStatusException 404 if game with given code does not exist
+     * @return Game
+     */
     @GetMapping(value="games", params="code", produces="application/json")
     public ResponseEntity<Game> findGameByCode(@RequestParam String code) {
         Optional<Game> game = gameService.findGameByCode(code);
         return ResponseEntity.of(game);
     }
 
+    /**
+     * Get game by id
+     * @param gameID
+     * @return Game
+     */
     @GetMapping(value="games/{game_id}", produces="application/json")
     public ResponseEntity<Game> findGameByID(@PathVariable("game_id") Long gameID) {
         Optional<Game> game = gameService.findGameByID(gameID);
         return ResponseEntity.of(game);
     }
 
+    /**
+     * Create new game
+     * @param game Game to create
+     * @return Game
+     */
     @PostMapping(value="games", produces="application/json")
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
         Game newGame = gameService.createGame(game);
         return new ResponseEntity<>(newGame, HttpStatus.CREATED);
     }
 
+    /**
+     * Delete game by id
+     * @param gameID
+     * @throws ResponseStatusException 404 if game with given id does not exist
+     * @return Game
+     */
     @DeleteMapping(value="games/{game_id}", produces="application/json")
     public ResponseEntity<Game> deleteGame(@PathVariable("game_id") Long gameID) {
         Optional<Game> game = gameService.findGameByID(gameID);
@@ -56,6 +82,13 @@ public class OrgGameController {
         }
     }
 
+    /**
+     * Update game by id
+     * @param gameID
+     * @param game Game to update
+     * @throws ResponseStatusException 404 if game with given id does not exist
+     * @return Game
+     */
     @PutMapping(value="games/{game_id}", produces="application/json")
     public ResponseEntity<Game> updateGame(@PathVariable("game_id") Long gameID, @RequestBody Game game) {
         Optional<Game> oldGame = gameService.findGameByID(gameID);
@@ -67,6 +100,13 @@ public class OrgGameController {
         }
     }
 
+    /**
+     * Start game by id
+     * @param gameID
+     * @throws ResponseStatusException 404 if game with given id does not exist
+     * @throws ResponseStatusException 409 if game with given id is already started
+     * @return Game
+     */
     @PostMapping(value="games/{game_id}/start", produces="application/json")
     public ResponseEntity<Game> startGame(@PathVariable("game_id") Long gameID) {
         Optional<Game> game = gameService.findGameByID(gameID);
@@ -80,5 +120,4 @@ public class OrgGameController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with this ID was not found");
         }
     }
-
 }
