@@ -55,31 +55,22 @@ public class RoomController {
     }
 
     /**
-     * Validate that player (with session ID) is in game (with game ID).
-     * @param gameID
+     * Get the game belonging to a player (by session ID).
      * @param playerSessionID
-     * @throws ResponseStatusException 404 if Game not found
      * @throws ResponseStatusException 404 if Player not found
-     * @throws ResponseStatusException 404 if Player is not in the specified game
+     * @throws ResponseStatusException 404 if Game not found
      * @return Player
      */
-    @GetMapping(value="/games/{game_id}/players")
-    public Player validatePlayerIsInGame(@PathVariable("game_id") Long gameID,
-                                         @RequestParam(value="player_session_id") String playerSessionID) {
+    @GetMapping(value="/players/{player_session_id}/game")
+    public Game getGameBySessionID(@PathVariable("player_session_id") String playerSessionID) {
 
-    	Optional<Game> game = gameService.findGameByID(gameID);
         Optional<Player> player = playerService.findPlayerBySessionID(playerSessionID);
-        
-        if (!game.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
-        }
 
-        if (player.isPresent() && game.get().getPlayers().contains(player.get())) {
-            return player.get();
-        } else {
+        if (!player.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found");
-
         }
+
+        return player.get().getGame();
     }
 
     /**
