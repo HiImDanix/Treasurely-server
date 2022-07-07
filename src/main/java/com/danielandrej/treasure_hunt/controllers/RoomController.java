@@ -82,21 +82,22 @@ public class RoomController {
         }
     }
 
-    @DeleteMapping(value="/games/{game_id}/join", produces="application/json")
-    public String leaveGame(@PathVariable("game_id") Long gameID) {
-        Optional<Game> game = gameService.findGameByID(gameID);
+    /**
+     * Leave a game.
+     * @param playerSessionID
+     * @throws ResponseStatusException 404 if Player not found
+     * @return Success status
+     */
+    @DeleteMapping(value="/players/{session_id}", produces="application/json")
+    public String leaveGame(@PathVariable("session_id") String playerSessionID) {
 
-        if (!game.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
+        Optional<Player> player = playerService.findPlayerBySessionID(playerSessionID);
+
+        if (!player.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found");
         }
-            String sessionID = RequestContextHolder.currentRequestAttributes().getSessionId();
-            Optional<Player> existingPlayer = playerService.findPlayerBySessionID(sessionID);
-            if (existingPlayer.isPresent()) {
-                existingPlayer.get().setGame(null);
-                playerService.savePlayer(existingPlayer.get());
-            } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found");
-            }
-            return "OK";
+
+        playerService.deletePlayer(player.get());
+        return "OK";
     }
 }
