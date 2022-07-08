@@ -1,13 +1,8 @@
-FROM openjdk:17
-WORKDIR /workspace/app
-
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-COPY src src
-
-RUN ./mvnw install -DskipTests
-
+FROM adoptopenjdk/openjdk17:alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+VOLUME /tmp
+ARG JAR_FILE
+ADD ${JAR_FILE} /app/app.jar
 EXPOSE 8080
-
-RUN ./mvnw spring-boot:run
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
