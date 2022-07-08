@@ -1,5 +1,5 @@
 FROM openjdk:17
-RUN addgroup -S spring && adduser -S spring -G spring
+RUN /usr/sbin/addgroup -S spring && /usr/sbin/adduser -S spring -G spring
 USER spring:spring
 VOLUME /tmp
 ARG JAR_FILE
