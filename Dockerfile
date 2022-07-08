@@ -1,8 +1,8 @@
 FROM openjdk:17-jdk-alpine
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
-VOLUME /tmp
-ARG JAR_FILE
-ADD ${JAR_FILE} /app/app.jar
+COPY ${JAR_FILE} app.jar
+
+WORKDIR /usr/app
+
 EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
+
