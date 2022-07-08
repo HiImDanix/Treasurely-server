@@ -67,7 +67,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.danielandrel.treasure_hunt.TreasureHuntApplication</mainClass>
+                            <mainClass>com.danielandrej.treasure_hunt.TreasureHuntApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
