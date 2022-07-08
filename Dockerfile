@@ -1,8 +1,11 @@
 FROM openjdk:17-jdk-alpine
-COPY ${JAR_FILE} app.jar
 
-WORKDIR /usr/app
+WORKDIR /app
 
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
 
+COPY src ./src
+
+CMD ["./mvnw", "spring-boot:run"]
