@@ -61,7 +61,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.places.Main</mainClass>
+                    <mainClass>com.danielandrej.treasure_hunt.TreasureHuntApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
