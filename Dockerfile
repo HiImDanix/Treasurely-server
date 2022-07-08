@@ -1,5 +1,5 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:17-jdk-alpine
 EXPOSE 8080
-ARG JAR_FILE=target/demo-app-1.0.0.jar
+ARG JAR_FILE=jar/treasure-hunt.jar
 ADD ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
