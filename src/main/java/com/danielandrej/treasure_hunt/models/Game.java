@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "game")
 public class Game {
 
     /* Status of the game */
