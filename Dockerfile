@@ -1,5 +1,8 @@
-FROM openjdk:17-jdk-alpine
-EXPOSE 8080
-ARG JAR_FILE=jar/treasure_hunt.jar
-ADD ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+# select parent image
+FROM maven:3.8.6-jdk-17
+# copy the source tree and the pom.xml to our new container
+COPY ./ ./
+# package our application code
+RUN mvn clean package
+# set the startup command to execute the jar
+CMD ["java", "-jar", "target/treasure_hunt.jar"]
