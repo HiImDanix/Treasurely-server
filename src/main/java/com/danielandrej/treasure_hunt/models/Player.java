@@ -21,7 +21,7 @@ public class Player {
     @Column(name = "id", updatable = false, nullable = false)
     private String playerSessionID;
     private String name;
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JsonBackReference
     private Game game;
     @OneToMany(cascade = CascadeType.ALL)
