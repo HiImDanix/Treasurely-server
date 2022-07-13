@@ -2,7 +2,7 @@ package com.danielandrej.treasure_hunt;
 
 import com.danielandrej.treasure_hunt.models.Game;
 import com.danielandrej.treasure_hunt.repositories.GameRepository;
-import com.danielandrej.treasure_hunt.models.Task;
+import com.danielandrej.treasure_hunt.models.Mission;
 import com.danielandrej.treasure_hunt.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -30,10 +30,10 @@ public class DataLoader implements ApplicationRunner {
                 List.of(game1, game2)
         );
 
-        Task task1 = new Task(game2, "answer1");
-        Task task2 = new Task(game2, "answer2");
+        Mission mission1 = new Mission(game2, "answer1");
+        Mission mission2 = new Mission(game2, "answer2");
         taskRepository.saveAll(
-                List.of(task1, task2)
+                List.of(mission1, mission2)
         );
 
         gameRepository.save(game2);

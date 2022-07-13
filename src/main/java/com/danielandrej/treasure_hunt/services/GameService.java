@@ -4,7 +4,7 @@ import com.danielandrej.treasure_hunt.repositories.shared.RandomString;
 import com.danielandrej.treasure_hunt.models.Game;
 import com.danielandrej.treasure_hunt.models.Player;
 import com.danielandrej.treasure_hunt.repositories.PlayerRepository;
-import com.danielandrej.treasure_hunt.models.Task;
+import com.danielandrej.treasure_hunt.models.Mission;
 import com.danielandrej.treasure_hunt.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,18 +73,18 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game is not in progress");
         }
 
-        Optional<Task> completedTask = game.getTasks().stream().filter(t -> t.getQrCodeValue().equals(answer)).findFirst();
+        Optional<Mission> completedTask = game.getMissions().stream().filter(t -> t.getQrCodeValue().equals(answer)).findFirst();
         // TODO: Custom exceptions
         if (completedTask.isPresent()) {
-            if (player.getCompletedTasks().contains(completedTask.get())) {
+            if (player.getCompletedMissions().contains(completedTask.get())) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "You already answered this question");
             }
 
-            player.addCompletedTask(completedTask.get());
+            player.addCompletedMission(completedTask.get());
             playerRepository.save(player);
 
             //if all tasks are completed, finish game
-            if (player.getCompletedTasks().size() == game.getTasks().size()) {
+            if (player.getCompletedMissions().size() == game.getMissions().size()) {
                 updateStatus(game, Game.Status.FINISHED);
             }
 

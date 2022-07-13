@@ -25,7 +25,7 @@ public class Player {
     @JsonBackReference
     private Game game;
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Task> completedTasks = new HashSet<>();
+    private Set<Mission> completedMissions = new HashSet<>();
 
     public Player(String name, Game game) {
         this.name = name;
@@ -55,7 +55,7 @@ public class Player {
                 "sessionID='" + playerSessionID + '\'' +
                 ", name='" + name + '\'' +
                 ", game=" + game +
-                ", completedTasks=" + completedTasks +
+                ", completedMissions=" + completedMissions +
                 '}';
     }
 
@@ -86,18 +86,18 @@ public class Player {
         return this;
     }
 
-    public Set<Task> getCompletedTasks() {
-        return completedTasks;
+    public Set<Mission> getCompletedMissions() {
+        return completedMissions;
     }
 
-    public Player setCompletedTasks(Set<Task> completedTasks) {
-        this.completedTasks.retainAll(completedTasks);
-        this.completedTasks.addAll(completedTasks);
+    public Player setCompletedMissions(Set<Mission> completedMissions) {
+        this.completedMissions.retainAll(completedMissions);
+        this.completedMissions.addAll(completedMissions);
         return this;
     }
 
-    public Player addCompletedTask(Task task) {
-        completedTasks.add(task);
+    public Player addCompletedMission(Mission mission) {
+        completedMissions.add(mission);
         return this;
     }
 }

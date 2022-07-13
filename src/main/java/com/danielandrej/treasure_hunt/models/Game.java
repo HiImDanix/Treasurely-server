@@ -39,7 +39,7 @@ public class Game {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
-    private Set<Task> tasks = new HashSet<>();
+    private Set<Mission> missions = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
     @JsonManagedReference
@@ -74,23 +74,23 @@ public class Game {
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
-                ", tasks=" + tasks +
+                ", missions=" + missions +
                 ", players=" + players +
                 '}';
     }
 
-    public Set<Task> getTasks() {
-        return tasks;
+    public Set<Mission> getMissions() {
+        return missions;
     }
 
-    public Game setTasks(Set<Task> tasks) {
-        this.tasks.retainAll(tasks);
-        this.tasks.addAll(tasks);
+    public Game setMissions(Set<Mission> missions) {
+        this.missions.retainAll(missions);
+        this.missions.addAll(missions);
         return this;
     }
 
-    public Game addTask(Task task) {
-        this.tasks.add(task);
+    public Game addMission(Mission mission) {
+        this.missions.add(mission);
         return this;
     }
 

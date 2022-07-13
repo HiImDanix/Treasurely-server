@@ -1,17 +1,14 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 
 @Entity
-@Table(name = "task")
-public class Task {
+@Table(name = "mission")
+public class Mission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -23,20 +20,20 @@ public class Task {
     @ManyToOne
     private Game game;
 
-    public Task(Game game, String qrCodeValue) {
+    public Mission(Game game, String qrCodeValue) {
         this.game = game;
         this.qrCodeValue = qrCodeValue;
     }
 
-    public Task() {
+    public Mission() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(id, task.id);
+        Mission mission = (Mission) o;
+        return Objects.equals(id, mission.id);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "Mission{" +
                 "id=" + id +
                 ", qrCodeValue='" + qrCodeValue + '\'' +
                 '}';
@@ -64,7 +61,7 @@ public class Task {
         return qrCodeValue;
     }
 
-    public Task setQrCodeValue(String qrCodeValue) {
+    public Mission setQrCodeValue(String qrCodeValue) {
         this.qrCodeValue = qrCodeValue;
         return this;
     }
@@ -73,7 +70,7 @@ public class Task {
         return game;
     }
 
-    public Task setGame(Game game) {
+    public Mission setGame(Game game) {
         this.game = game;
         return this;
     }
