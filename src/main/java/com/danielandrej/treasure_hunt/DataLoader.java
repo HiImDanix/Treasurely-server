@@ -1,6 +1,7 @@
 package com.danielandrej.treasure_hunt;
 
 import com.danielandrej.treasure_hunt.models.Game;
+import com.danielandrej.treasure_hunt.models.LocationHint;
 import com.danielandrej.treasure_hunt.repositories.GameRepository;
 import com.danielandrej.treasure_hunt.models.Mission;
 import com.danielandrej.treasure_hunt.repositories.TaskRepository;
@@ -30,8 +31,10 @@ public class DataLoader implements ApplicationRunner {
                 List.of(game1, game2)
         );
 
-        Mission mission1 = new Mission(game2, "answer1");
-        Mission mission2 = new Mission(game2, "answer2");
+        Mission mission1 = new Mission(game2, "answer1",
+                "Found in the outskirts of the city",
+                new LocationHint(-20.54150, -47.4659, 10));
+        Mission mission2 = new Mission(game2, "answer2", null, null);
         taskRepository.saveAll(
                 List.of(mission1, mission2)
         );

@@ -20,9 +20,18 @@ public class Mission {
     @ManyToOne
     private Game game;
 
-    public Mission(Game game, String qrCodeValue) {
+    @Column(nullable = true)
+    private String description;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private LocationHint locationHint;
+
+
+    public Mission(Game game, String qrCodeValue, String description, LocationHint locationHint) {
         this.game = game;
         this.qrCodeValue = qrCodeValue;
+        this.locationHint = locationHint;
+        this.description = description;
     }
 
     public Mission() {
@@ -46,6 +55,7 @@ public class Mission {
         return "Mission{" +
                 "id=" + id +
                 ", qrCodeValue='" + qrCodeValue + '\'' +
+                ", locationHint=" + locationHint +
                 '}';
     }
 
@@ -74,4 +84,22 @@ public class Mission {
         this.game = game;
         return this;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocationHint getLocationHint() {
+        return locationHint;
+    }
+
+    public void setLocationHint(LocationHint locationHint) {
+        this.locationHint = locationHint;
+    }
+
+
 }
