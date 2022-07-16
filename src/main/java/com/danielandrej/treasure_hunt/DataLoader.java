@@ -31,10 +31,12 @@ public class DataLoader implements ApplicationRunner {
                 List.of(game1, game2)
         );
 
-        Mission mission1 = new Mission(game2, "answer1",
+        Mission mission1 = new Mission(game2,
                 "Found in the outskirts of the city",
-                new LocationHint(-20.54150, -47.4659, 10));
-        Mission mission2 = new Mission(game2, "answer2", null, null);
+                10,
+                new LocationHint(-20.54150, -47.4659, 10),
+                "answer1");
+        Mission mission2 = new Mission(game2, null, 10, null, "answer2");
         taskRepository.saveAll(
                 List.of(mission1, mission2)
         );

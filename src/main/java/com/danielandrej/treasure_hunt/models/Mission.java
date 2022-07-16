@@ -23,15 +23,20 @@ public class Mission {
     @Column(nullable = true)
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
     private LocationHint locationHint;
 
+    // points
+    @Column(nullable = false)
+    private Integer points;
 
-    public Mission(Game game, String qrCodeValue, String description, LocationHint locationHint) {
+
+    public Mission(Game game, String description, int points, LocationHint locationHint, String qrCodeValue) {
         this.game = game;
-        this.qrCodeValue = qrCodeValue;
-        this.locationHint = locationHint;
         this.description = description;
+        this.points = points;
+        this.locationHint = locationHint;
+        this.qrCodeValue = qrCodeValue;
     }
 
     public Mission() {
@@ -101,5 +106,11 @@ public class Mission {
         this.locationHint = locationHint;
     }
 
+    public Integer getPoints() {
+        return points;
+    }
 
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
 }
