@@ -76,6 +76,7 @@ public class Game {
                 ", name='" + name + '\'' +
                 ", missions=" + missions +
                 ", players=" + players +
+                ", status=" + status +
                 '}';
     }
 

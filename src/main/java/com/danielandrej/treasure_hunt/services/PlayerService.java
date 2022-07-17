@@ -5,7 +5,6 @@ import com.danielandrej.treasure_hunt.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Service
@@ -19,7 +18,7 @@ public class PlayerService {
     }
 
     public Optional<Player> findPlayerBySessionID(String sessionID) {
-        return playerRepository.findPlayerBySessionID(sessionID);
+        return playerRepository.findBySessionID(sessionID);
     }
 
     public void savePlayer(Player player) {

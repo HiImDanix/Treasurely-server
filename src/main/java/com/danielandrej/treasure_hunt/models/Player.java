@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "player")
 public class Player {
 
     @Id
@@ -19,17 +17,18 @@ public class Player {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "id", updatable = false, nullable = false)
-    private String playerSessionID;
+    private String sessionID;
     private String name;
+    @OneToOne(cascade = CascadeType.ALL, optional = true, mappedBy = "admin")
+    private Team team;
     @ManyToOne
     @JsonBackReference
     private Game game;
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Mission> completedMissions = new HashSet<>();
-
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    private PlayerGameState playerGameState = new PlayerGameState();
     public Player(String name, Game game) {
         this.name = name;
-        this.game = game;
+        this.game = game;;
     }
 
     public Player() {
@@ -41,30 +40,20 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return Objects.equals(playerSessionID, player.playerSessionID);
+        return Objects.equals(sessionID, player.sessionID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerSessionID);
+        return Objects.hash(sessionID);
     }
 
-    @Override
-    public String toString() {
-        return "Player{" +
-                "sessionID='" + playerSessionID + '\'' +
-                ", name='" + name + '\'' +
-                ", game=" + game +
-                ", completedMissions=" + completedMissions +
-                '}';
+    public String getSessionID() {
+        return sessionID;
     }
 
-    public String getPlayerSessionID() {
-        return playerSessionID;
-    }
-
-    public Player setPlayerSessionID(String sessionID) {
-        this.playerSessionID = sessionID;
+    public Player setSessionID(String sessionID) {
+        this.sessionID = sessionID;
         return this;
     }
 
@@ -77,6 +66,15 @@ public class Player {
         return this;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public Player setTeam(Team team) {
+        this.team = team;
+        return this;
+    }
+
     public Game getGame() {
         return game;
     }
@@ -86,18 +84,23 @@ public class Player {
         return this;
     }
 
-    public Set<Mission> getCompletedMissions() {
-        return completedMissions;
+    public PlayerGameState getPlayerGameState() {
+        return playerGameState;
     }
 
-    public Player setCompletedMissions(Set<Mission> completedMissions) {
-        this.completedMissions.retainAll(completedMissions);
-        this.completedMissions.addAll(completedMissions);
+    public Player setPlayerGameState(PlayerGameState playerGameState) {
+        this.playerGameState = playerGameState;
         return this;
     }
 
-    public Player addCompletedMission(Mission mission) {
-        completedMissions.add(mission);
-        return this;
+    @Override
+    public String toString() {
+        return "Player{" +
+                "sessionID='" + sessionID + '\'' +
+                ", name='" + name + '\'' +
+                ", team=" + team +
+                ", game=" + game +
+                ", playerGameState=" + playerGameState +
+                '}';
     }
 }
