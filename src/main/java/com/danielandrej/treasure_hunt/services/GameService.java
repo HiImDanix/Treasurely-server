@@ -2,7 +2,6 @@ package com.danielandrej.treasure_hunt.services;
 
 import com.danielandrej.treasure_hunt.models.Game;
 import com.danielandrej.treasure_hunt.repositories.GameRepository;
-import com.danielandrej.treasure_hunt.repositories.PlayerRepository;
 import com.danielandrej.treasure_hunt.repositories.shared.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameService {
 
     private final GameRepository gameRepository;
-    private final PlayerRepository playerRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository, PlayerRepository playerRepository) {
+    public GameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.playerRepository = playerRepository;
 
     }
 
@@ -56,7 +53,6 @@ public class GameService {
         return gameRepository.save(oldGame);
     }
 
-    // update status of game
     public Game updateStatus(Game game, Game.Status status) {
         game.setStatus(status);
         return gameRepository.save(game);

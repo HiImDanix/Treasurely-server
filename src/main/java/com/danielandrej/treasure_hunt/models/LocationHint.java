@@ -5,11 +5,9 @@ import javax.persistence.*;
 @Entity
 public class LocationHint {
 
-     @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
-     @Column(name = "id", nullable = false)
-     private Long id;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private double latitude;
     private double longitude;
     private double radiusMeters;
@@ -47,10 +45,20 @@ public class LocationHint {
         this.radiusMeters = radiusMeters;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public LocationHint setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "LocationHint{" +
-                "latitude=" + latitude +
+                "id=" + id +
+                ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", radiusMeters=" + radiusMeters +
                 '}';

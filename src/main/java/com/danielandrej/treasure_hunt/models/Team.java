@@ -1,7 +1,6 @@
 package com.danielandrej.treasure_hunt.models;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +8,7 @@ import java.util.Set;
 public class Team {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false, unique = true)
     private String name;
@@ -24,6 +24,7 @@ public class Team {
         this.name = name;
         this.admin = admin;
         this.players = new HashSet<>();
+        this.players.add(admin);
     }
 
     public Team() {

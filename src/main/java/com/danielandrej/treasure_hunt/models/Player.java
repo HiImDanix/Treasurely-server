@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +18,7 @@ public class Player {
     @Column(name = "id", updatable = false, nullable = false)
     private String sessionID;
     private String name;
-    @OneToOne(cascade = CascadeType.ALL, optional = true, mappedBy = "admin")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "admin")
     private Team team;
     @ManyToOne
     @JsonBackReference
@@ -28,7 +27,7 @@ public class Player {
     private PlayerGameState playerGameState = new PlayerGameState();
     public Player(String name, Game game) {
         this.name = name;
-        this.game = game;;
+        this.game = game;
     }
 
     public Player() {

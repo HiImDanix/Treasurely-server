@@ -32,7 +32,7 @@ public class TeamService {
 
     public List<Team> getTeams(String playerSessionID) {
         Optional<Player> player = playerService.findPlayerBySessionID(playerSessionID);
-        if (!player.isPresent()) {
+        if (player.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
         }
 
@@ -41,7 +41,7 @@ public class TeamService {
 
     public Team findTeamByID(Long teamID) {
         Optional<Team> team = teamRepository.findById(teamID);
-        if (!team.isPresent()) {
+        if (team.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player group not found");
         }
         return team.get();

@@ -7,7 +7,6 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "mission")
 public class Mission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,18 +14,12 @@ public class Mission {
     private Long id;
     @Column(nullable = false)
     private String qrCodeValue;
-
     @JsonBackReference
     @ManyToOne
     private Game game;
-
-    @Column(nullable = true)
     private String description;
-
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @OneToOne(cascade = CascadeType.ALL)
     private LocationHint locationHint;
-
-    // points
     @Column(nullable = false)
     private Integer points;
 
@@ -53,15 +46,6 @@ public class Mission {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Mission{" +
-                "id=" + id +
-                ", qrCodeValue='" + qrCodeValue + '\'' +
-                ", locationHint=" + locationHint +
-                '}';
     }
 
     public Long getId() {
@@ -112,5 +96,17 @@ public class Mission {
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    @Override
+    public String toString() {
+        return "Mission{" +
+                "id=" + id +
+                ", qrCodeValue='" + qrCodeValue + '\'' +
+                ", game=" + game +
+                ", description='" + description + '\'' +
+                ", locationHint=" + locationHint +
+                ", points=" + points +
+                '}';
     }
 }

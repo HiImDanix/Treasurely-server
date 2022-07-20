@@ -2,8 +2,8 @@ package com.danielandrej.treasure_hunt;
 
 import com.danielandrej.treasure_hunt.models.Game;
 import com.danielandrej.treasure_hunt.models.LocationHint;
-import com.danielandrej.treasure_hunt.repositories.GameRepository;
 import com.danielandrej.treasure_hunt.models.Mission;
+import com.danielandrej.treasure_hunt.repositories.GameRepository;
 import com.danielandrej.treasure_hunt.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
