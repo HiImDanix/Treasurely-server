@@ -4,6 +4,9 @@ package com.danielandrej.treasure_hunt.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -30,20 +33,21 @@ public class Game {
             generator = "room_sequence"
     )
     private long id;
-
     @Column(nullable = false, unique = true)
+    @NotEmpty
     private String code;
-
     @Column(nullable = false)
+    @NotEmpty
+    @Size(min = 3, max = 32)
     private String name;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
-    private Set<Mission> missions = new HashSet<>();
-
+    @NotNull
+    private Set<@NotNull Mission> missions = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
+    @NotNull
     @JsonManagedReference
     private Set<Player> players = new HashSet<>();
-
+    @NotNull
     private Status status = Status.NOT_STARTED;
 
     public Game(String name, String code) {

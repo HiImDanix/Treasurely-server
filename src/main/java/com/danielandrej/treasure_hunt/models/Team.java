@@ -1,6 +1,11 @@
 package com.danielandrej.treasure_hunt.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,19 +16,25 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false, unique = true)
+    @NotEmpty(message = "Team name is required")
+    @Size(min = 3, max = 20, message = "Team name must be between 3 and 20 characters long")
     private String name;
     @OneToOne(optional = false)
+    @NotNull
+    @JsonBackReference
     private Player admin;
     @OneToMany
-    private Set<Player> players;
+    @NotNull
+    @JsonBackReference
+    private Set<@NotNull Player> players = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @NotNull
     private PlayerGameState playerGameState = new PlayerGameState();
 
     public Team(String name, Player admin) {
         this.name = name;
         this.admin = admin;
-        this.players = new HashSet<>();
         this.players.add(admin);
     }
 

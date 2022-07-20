@@ -3,6 +3,10 @@ package com.danielandrej.treasure_hunt.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
@@ -13,15 +17,19 @@ public class Mission {
     @Column(name = "id", nullable = false)
     private Long id;
     @Column(nullable = false)
+    @NotEmpty
     private String qrCodeValue;
     @JsonBackReference
     @ManyToOne
+    @NotNull
     private Game game;
+    @NotEmpty(message = "Mission description is required")
     private String description;
     @OneToOne(cascade = CascadeType.ALL)
     private LocationHint locationHint;
     @Column(nullable = false)
-    private Integer points;
+    @Positive(message = "Points earned for completing a mission must be positive")
+    private int points;
 
 
     public Mission(Game game, String description, int points, LocationHint locationHint, String qrCodeValue) {

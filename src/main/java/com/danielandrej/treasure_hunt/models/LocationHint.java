@@ -1,6 +1,7 @@
 package com.danielandrej.treasure_hunt.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 
 @Entity
 public class LocationHint {
@@ -10,6 +11,7 @@ public class LocationHint {
     private Long id;
     private double latitude;
     private double longitude;
+    @Positive
     private double radiusMeters;
 
     public LocationHint(double latitude, double longitude, double radiusMeters) {

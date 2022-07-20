@@ -1,6 +1,7 @@
 package com.danielandrej.treasure_hunt.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ public class PlayerGameState {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     @OneToMany
+    @NotNull
     protected Set<Mission> completedMissions = new HashSet<>();
 
     public PlayerGameState() {

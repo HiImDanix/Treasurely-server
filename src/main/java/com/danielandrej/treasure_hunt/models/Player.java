@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -17,13 +20,17 @@ public class Player {
     )
     @Column(name = "id", updatable = false, nullable = false)
     private String sessionID;
+    @NotEmpty(message = "Player name is required")
+    @Size(min = 3, max = 20)
     private String name;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "admin")
     private Team team;
     @ManyToOne
     @JsonBackReference
+    @NotNull
     private Game game;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @NotNull
     private PlayerGameState playerGameState = new PlayerGameState();
     public Player(String name, Game game) {
         this.name = name;
