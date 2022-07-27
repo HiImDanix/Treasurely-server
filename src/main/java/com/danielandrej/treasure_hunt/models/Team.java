@@ -22,20 +22,28 @@ public class Team {
     @OneToOne(optional = false)
     @NotNull
     @JsonBackReference
-    private Player admin;
-    @OneToMany
+    private Player leader;
+    @OneToMany(mappedBy = "team")
     @NotNull
     @JsonBackReference
     private Set<@NotNull Player> players = new HashSet<>();
-
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @NotNull
     private PlayerGameState playerGameState = new PlayerGameState();
 
-    public Team(String name, Player admin) {
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<@NotNull Player> invitedPlayers = new HashSet<>();
+
+    // players that have asked/requested to join the team
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<@NotNull Player> pendingPlayers = new HashSet<>();
+
+    public Team(String name, Player leader) {
         this.name = name;
-        this.admin = admin;
-        this.players.add(admin);
+        this.leader = leader;
+        this.players.add(leader);
     }
 
     public Team() {
@@ -72,12 +80,12 @@ public class Team {
         return this.players;
     }
 
-    public Player getAdmin() {
-        return admin;
+    public Player getLeader() {
+        return leader;
     }
 
-    public Team setAdmin(Player admin) {
-        this.admin = admin;
+    public Team setLeader(Player leader) {
+        this.leader = leader;
         return this;
     }
 
@@ -95,9 +103,32 @@ public class Team {
         return "Team{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", admin=" + admin +
+                ", leader=" + leader +
                 ", players=" + players +
                 ", playerGameState=" + playerGameState +
                 '}';
+    }
+
+    public Set<Player> getInvitedPlayers() {
+        return invitedPlayers;
+    }
+
+    public Team setInvitedPlayers(Set<Player> invitedPlayers) {
+        this.invitedPlayers = invitedPlayers;
+        return this;
+    }
+
+    public Team addInvitedPlayer(Player player) {
+        this.invitedPlayers.add(player);
+        return this;
+    }
+
+    public Set<Player> getPendingPlayers() {
+        return pendingPlayers;
+    }
+
+    public Team setPendingPlayers(Set<Player> pendingPlayers) {
+        this.pendingPlayers = pendingPlayers;
+        return this;
     }
 }

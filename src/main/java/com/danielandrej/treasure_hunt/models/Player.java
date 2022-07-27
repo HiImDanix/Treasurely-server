@@ -13,17 +13,15 @@ import java.util.Objects;
 public class Player {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(updatable = false, nullable = false, unique = true)
     private String sessionID;
     @NotEmpty(message = "Player name is required")
     @Size(min = 3, max = 20)
     private String name;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "admin")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Team team;
     @ManyToOne
     @JsonBackReference
@@ -32,7 +30,8 @@ public class Player {
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @NotNull
     private PlayerGameState playerGameState = new PlayerGameState();
-    public Player(String name, Game game) {
+    public Player(String sessionID, String name, Game game) {
+        this.sessionID = sessionID;
         this.name = name;
         this.game = game;
     }
@@ -99,10 +98,20 @@ public class Player {
         return this;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Player setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
-                "sessionID='" + sessionID + '\'' +
+                "id=" + id +
+                ", sessionID='" + sessionID + '\'' +
                 ", name='" + name + '\'' +
                 ", team=" + team +
                 ", game=" + game +

@@ -28,4 +28,7 @@ public class PlayerService {
         playerRepository.delete(player);
     }
 
+    public Optional<Player> findPlayerByID(Long player_id) {
+        return playerRepository.findById(player_id);
+    }
 }

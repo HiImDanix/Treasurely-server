@@ -46,7 +46,8 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid game code");
         }
 
-        Player player = new Player(name, game.get());
+        String sessionID = java.util.UUID.randomUUID().toString();
+        Player player = new Player(sessionID, name, game.get());
         playerService.savePlayer(player);
 
         return player;
