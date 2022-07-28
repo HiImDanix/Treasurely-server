@@ -4,7 +4,10 @@ import com.danielandrej.treasure_hunt.models.Game;
 import com.danielandrej.treasure_hunt.repositories.GameRepository;
 import com.danielandrej.treasure_hunt.repositories.shared.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,8 +46,8 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-    public void deleteGame(Game game) {
-        gameRepository.delete(game);
+    public void deleteGameByID(Long gameID) {
+        gameRepository.deleteById(gameID);
     }
 
     public Game updateGame(Game oldGame, Game newGame) {
@@ -53,8 +56,26 @@ public class GameService {
         return gameRepository.save(oldGame);
     }
 
+    public Game updateGameByID(Long gameID, Game newGame) {
+        Optional<Game> game = gameRepository.findById(gameID);
+        if (game.isPresent()) {
+            return updateGame(game.get(), newGame);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
+        }
+    }
+
     public Game updateStatus(Game game, Game.Status status) {
         game.setStatus(status);
         return gameRepository.save(game);
+    }
+
+    public Game updateGameStatus(Long gameID, Game.Status status) {
+        Optional<Game> game = gameRepository.findById(gameID);
+        if (game.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
+        }
+        game.get().setStatus(status);
+        return gameRepository.save(game.get());
     }
 }
