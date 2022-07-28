@@ -68,8 +68,7 @@ public class RoomService {
         }
 
         // Create & persist player
-        String sessionID = java.util.UUID.randomUUID().toString();
-        Player player = new Player(sessionID, name, game.get());
+        Player player = new Player(name, game.get());
         playerRepository.save(player);
 
         return player;

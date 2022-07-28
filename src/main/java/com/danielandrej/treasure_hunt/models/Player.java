@@ -1,11 +1,9 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -17,7 +15,6 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
     @Column(updatable = false, nullable = false, unique = true)
     private String sessionID;
     @NotBlank(message = "Player name is required")
@@ -32,14 +29,18 @@ public class Player {
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @NotNull
     private PlayerGameState playerGameState = new PlayerGameState();
-    public Player(String sessionID, String name, Game game) {
-        this.sessionID = sessionID;
+    public Player(String name, Game game) {
         this.name = name;
         this.game = game;
     }
 
     public Player() {
 
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.sessionID = java.util.UUID.randomUUID().toString();
     }
 
     @Override
