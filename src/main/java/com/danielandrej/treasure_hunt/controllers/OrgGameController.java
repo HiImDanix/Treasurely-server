@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/organizers")
 public class OrgGameController {
 
 
@@ -45,7 +46,7 @@ public class OrgGameController {
 
     /**
      * Get game by id
-     * @param gameID
+     * @param gameID Game ID
      * @return Game
      */
     @GetMapping(value="games/{game_id}", produces="application/json")
@@ -67,7 +68,7 @@ public class OrgGameController {
 
     /**
      * Delete game by id
-     * @param gameID
+     * @param gameID Game ID
      * @throws ResponseStatusException 404 if game with given id does not exist
      * @return Game
      */
@@ -84,7 +85,7 @@ public class OrgGameController {
 
     /**
      * Update game by id
-     * @param gameID
+     * @param gameID Game ID
      * @param game Game to update
      * @throws ResponseStatusException 404 if game with given id does not exist
      * @return Game
@@ -102,7 +103,7 @@ public class OrgGameController {
 
     /**
      * Start game by id
-     * @param gameID
+     * @param gameID Game ID
      * @throws ResponseStatusException 404 if game with given id does not exist
      * @throws ResponseStatusException 409 if game with given id is already started
      * @return Game

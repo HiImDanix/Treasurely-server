@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,9 +17,10 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     @Column(updatable = false, nullable = false, unique = true)
     private String sessionID;
-    @NotEmpty(message = "Player name is required")
+    @NotBlank(message = "Player name is required")
     @Size(min = 3, max = 20)
     private String name;
     @ManyToOne(cascade = CascadeType.ALL)

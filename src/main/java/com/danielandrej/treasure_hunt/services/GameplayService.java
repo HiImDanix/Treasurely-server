@@ -25,7 +25,29 @@ public class GameplayService {
         this.playerGameStateRepository = playerGameStateRepository;
     }
 
-    public void submitQRAnswer(String qr_code, String playerSessionID) {
+    /**
+     * Get the game belonging to a player (by player's session ID).
+     * @param playerSessionID Player session ID
+     * @throws ResponseStatusException 404 if Player not found
+     * @throws ResponseStatusException 404 if Game not found
+     * @return Game
+     */
+    public Game getGameBySessionID(String playerSessionID) {
+        Optional<Player> player = playerRepository.findBySessionID(playerSessionID);
+        if (player.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found");
+        }
+
+        return player.get().getGame();
+    }
+
+    /**
+     * Submit a QR code answer.
+     * @param QRCode QR code value
+     * @param playerSessionID Player session ID
+     * @throws ResponseStatusException 404 if player does not exist
+     */
+    public void submitQRAnswer(String QRCode, String playerSessionID) {
         Optional<Player> player = playerRepository.findBySessionID(playerSessionID);
 
         if (player.isEmpty()) {
@@ -42,7 +64,7 @@ public class GameplayService {
 
         Game game = player.get().getGame();
 
-        Optional<Mission> completedTask = game.getMissions().stream().filter(t -> t.getQrCodeValue().equals(qr_code)).findFirst();
+        Optional<Mission> completedTask = game.getMissions().stream().filter(t -> t.getQrCodeValue().equals(QRCode)).findFirst();
 
         if (completedTask.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "QR code not found");

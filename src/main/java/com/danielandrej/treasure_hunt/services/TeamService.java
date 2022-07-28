@@ -2,7 +2,7 @@ package com.danielandrej.treasure_hunt.services;
 
 import com.danielandrej.treasure_hunt.models.Player;
 import com.danielandrej.treasure_hunt.models.Team;
-import com.danielandrej.treasure_hunt.repositories.MissionRepository;
+import com.danielandrej.treasure_hunt.repositories.PlayerRepository;
 import com.danielandrej.treasure_hunt.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,23 +15,19 @@ import java.util.Optional;
 @Service
 public class TeamService {
 
-    TeamRepository teamRepository;
-    MissionRepository missionRepository;
-    PlayerService playerService;
-    GameService gameService;
+    private final TeamRepository teamRepository;
+    private final PlayerRepository playerRepository;
 
 
     @Autowired
-    public TeamService(TeamRepository teamRepository, MissionRepository missionRepository, PlayerService playerService, GameService gameService) {
+    public TeamService(TeamRepository teamRepository, PlayerRepository playerRepository) {
         this.teamRepository = teamRepository;
-        this.missionRepository = missionRepository;
-        this.playerService = playerService;
-        this.gameService = gameService;
+        this.playerRepository = playerRepository;
 
     }
 
     public List<Team> getTeams(String playerSessionID) {
-        Optional<Player> player = playerService.findPlayerBySessionID(playerSessionID);
+        Optional<Player> player = playerRepository.findBySessionID(playerSessionID);
         if (player.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
         }
@@ -55,10 +51,14 @@ public class TeamService {
         teamRepository.delete(team);
     }
 
-    // create player group
+    /**
+     * Create a new team and make the player the leader of the team
+     * @param playerSessionID Player session ID
+     * @param name Team name
+     */
     public Team createTeam(String name, String playerSessionID) {
-        Optional<Player> player = playerService.findPlayerBySessionID(playerSessionID);
-        if (!player.isPresent()) {
+        Optional<Player> player = playerRepository.findBySessionID(playerSessionID);
+        if (player.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
         }
 
@@ -72,10 +72,15 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
-    public void invitePlayer(String player_session_id, Long player_id) {
+    /**
+     * Invite a player to a team, or accept invitation to a team if exists
+     * @param playerSessionID  The team leader's Player session ID
+     * @param playerID Player ID for the player to be invited to the team
+     */
+    public void invitePlayer(String playerSessionID, Long playerID) {
 
-        Optional<Player> player = playerService.findPlayerBySessionID(player_session_id);
-        if (!player.isPresent()) {
+        Optional<Player> player = playerRepository.findBySessionID(playerSessionID);
+        if (player.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
         }
 
@@ -85,8 +90,8 @@ public class TeamService {
         }
 
         // Get player to invite
-        Optional<Player> playerToInvite = playerService.findPlayerByID(player_id);
-        if (!playerToInvite.isPresent()) {
+        Optional<Player> playerToInvite = playerRepository.findById(playerID);
+        if (playerToInvite.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The player you are trying to invite does not exist");
         }
 
@@ -113,16 +118,20 @@ public class TeamService {
         teamRepository.save(player.get().getTeam());
     }
 
-    // Ask to join a team, or accept invitation to a team if an invitation to the team exists
-    public void joinTeam(String player_session_id, Long team_id) {
-        Optional<Player> player = playerService.findPlayerBySessionID(player_session_id);
-        if (!player.isPresent()) {
+    /**
+     * Ask to join a team, or accept invitation to a team if an invitation to the team exists
+     * @param teamID Team ID for the team to join
+     * @param playerSessionID  The player's session ID
+     */
+    public void joinTeam(String playerSessionID, Long teamID) {
+        Optional<Player> player = playerRepository.findBySessionID(playerSessionID);
+        if (player.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not in a game");
         }
 
         // Get team to join
-        Optional<Team> team = teamRepository.findById(team_id);
-        if (!team.isPresent()) {
+        Optional<Team> team = teamRepository.findById(teamID);
+        if (team.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The team you are trying to join does not exist");
         }
 
