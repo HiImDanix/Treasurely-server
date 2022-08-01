@@ -1,6 +1,9 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,6 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Player {
 
     @Id
@@ -34,10 +38,6 @@ public class Player {
         this.game = game;
     }
 
-    public Player() {
-
-    }
-
     @PrePersist
     protected void onCreate() {
         this.sessionID = java.util.UUID.randomUUID().toString();
@@ -54,60 +54,6 @@ public class Player {
     @Override
     public int hashCode() {
         return Objects.hash(sessionID);
-    }
-
-    public String getSessionID() {
-        return sessionID;
-    }
-
-    public Player setSessionID(String sessionID) {
-        this.sessionID = sessionID;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Player setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public Player setTeam(Team team) {
-        this.team = team;
-        return this;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public Player setGame(Game game) {
-        this.game = game;
-        return this;
-    }
-
-    public PlayerGameState getPlayerGameState() {
-        return playerGameState;
-    }
-
-    public Player setPlayerGameState(PlayerGameState playerGameState) {
-        this.playerGameState = playerGameState;
-        return this;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Player setId(Long id) {
-        this.id = id;
-        return this;
     }
 
     @Override

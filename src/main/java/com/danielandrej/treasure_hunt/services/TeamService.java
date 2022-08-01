@@ -110,9 +110,9 @@ public class TeamService {
         Team team = player.get().getTeam();
         if (team.getPendingPlayers().contains(playerToInvite.get())) {
             team.getPendingPlayers().remove(playerToInvite.get());
-            team.addPlayer(playerToInvite.get());
+            team.getPlayers().add(playerToInvite.get());
         } else {
-            team.addInvitedPlayer(playerToInvite.get());
+            team.getInvitedPlayers().add(playerToInvite.get());
         }
         // persist changes
         teamRepository.save(player.get().getTeam());
@@ -148,9 +148,9 @@ public class TeamService {
         // Check if the player is already invited to the team
         if (team.get().getInvitedPlayers().contains(player.get())) {
             team.get().getInvitedPlayers().remove(player.get());
-            team.get().addPlayer(player.get());
+            team.get().getPlayers().add(player.get());
         } else {
-            team.get().addPlayer(player.get());
+            team.get().getInvitedPlayers().add(player.get());
         }
         // persist changes
         teamRepository.save(team.get());

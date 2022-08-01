@@ -1,9 +1,14 @@
 package com.danielandrej.treasure_hunt.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class LocationHint {
 
     @Id
@@ -18,42 +23,6 @@ public class LocationHint {
         this.latitude = latitude;
         this.longitude = longitude;
         this.radiusMeters = radiusMeters;
-    }
-
-    public LocationHint() {
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getRadiusMeters() {
-        return radiusMeters;
-    }
-
-    public void setRadiusMeters(double radiusMeters) {
-        this.radiusMeters = radiusMeters;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public LocationHint setId(Long id) {
-        this.id = id;
-        return this;
     }
 
     @Override

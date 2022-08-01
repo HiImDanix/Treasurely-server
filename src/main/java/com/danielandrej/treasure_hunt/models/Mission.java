@@ -1,16 +1,19 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Mission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,9 +43,6 @@ public class Mission {
         this.qrCodeValue = qrCodeValue;
     }
 
-    public Mission() {
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,56 +54,6 @@ public class Mission {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getQrCodeValue() {
-        return qrCodeValue;
-    }
-
-    public Mission setQrCodeValue(String qrCodeValue) {
-        this.qrCodeValue = qrCodeValue;
-        return this;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public Mission setGame(Game game) {
-        this.game = game;
-        return this;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocationHint getLocationHint() {
-        return locationHint;
-    }
-
-    public void setLocationHint(LocationHint locationHint) {
-        this.locationHint = locationHint;
-    }
-
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
     }
 
     @Override

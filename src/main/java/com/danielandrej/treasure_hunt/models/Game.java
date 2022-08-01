@@ -2,9 +2,11 @@ package com.danielandrej.treasure_hunt.models;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Game {
 
     /* Status of the game */
@@ -56,9 +59,6 @@ public class Game {
         this.name = name;
     }
 
-    public Game() {
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,71 +82,5 @@ public class Game {
                 ", players=" + players +
                 ", status=" + status +
                 '}';
-    }
-
-    public Set<Mission> getMissions() {
-        return missions;
-    }
-
-    public Game setMissions(Set<Mission> missions) {
-        this.missions.retainAll(missions);
-        this.missions.addAll(missions);
-        return this;
-    }
-
-    public Game addMission(Mission mission) {
-        this.missions.add(mission);
-        return this;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public Game setId(long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public Game setCode(String joinCode) {
-        this.code = joinCode;
-        return this;
-    }
-
-    public Set<Player> getPlayers() {
-        return players;
-    }
-
-    public Game setPlayers(Set<Player> players) {
-        this.players.retainAll(players);
-        this.players.addAll(players);
-        return this;
-    }
-
-    public Game addPlayer(Player player) {
-        this.players.add(player);
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Game setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public Game setStatus(Status status) {
-        this.status = status;
-        return this;
     }
 }

@@ -1,11 +1,16 @@
 package com.danielandrej.treasure_hunt.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class PlayerGameState {
 
     @Id
@@ -14,32 +19,6 @@ public class PlayerGameState {
     @OneToMany
     @NotNull
     protected Set<Mission> completedMissions = new HashSet<>();
-
-    public PlayerGameState() {
-    }
-
-    public Set<Mission> getCompletedMissions() {
-        return completedMissions;
-    }
-
-    public PlayerGameState setCompletedMissions(Set<Mission> completedMissions) {
-        this.completedMissions = completedMissions;
-        return this;
-    }
-
-    public PlayerGameState addCompletedMission(Mission mission) {
-        this.completedMissions.add(mission);
-        return this;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public PlayerGameState setId(Long id) {
-        this.id = id;
-        return this;
-    }
 
     @Override
     public String toString() {

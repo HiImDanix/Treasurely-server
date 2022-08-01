@@ -1,6 +1,9 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Team {
 
     @Id
@@ -46,58 +50,6 @@ public class Team {
         this.players.add(leader);
     }
 
-    public Team() {
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Team setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public Set<Player> getPlayers() {
-        return players;
-    }
-
-    public Team setPlayers(Set<Player> players) {
-        this.players = players;
-        return this;
-    }
-
-    public Set<Player> addPlayer(Player player) {
-        this.players.add(player);
-        return this.players;
-    }
-
-    public Player getLeader() {
-        return leader;
-    }
-
-    public Team setLeader(Player leader) {
-        this.leader = leader;
-        return this;
-    }
-
-    public PlayerGameState getPlayerGameState() {
-        return playerGameState;
-    }
-
-    public Team setPlayerGameState(PlayerGameState playerGameState) {
-        this.playerGameState = playerGameState;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "Team{" +
@@ -109,26 +61,4 @@ public class Team {
                 '}';
     }
 
-    public Set<Player> getInvitedPlayers() {
-        return invitedPlayers;
-    }
-
-    public Team setInvitedPlayers(Set<Player> invitedPlayers) {
-        this.invitedPlayers = invitedPlayers;
-        return this;
-    }
-
-    public Team addInvitedPlayer(Player player) {
-        this.invitedPlayers.add(player);
-        return this;
-    }
-
-    public Set<Player> getPendingPlayers() {
-        return pendingPlayers;
-    }
-
-    public Team setPendingPlayers(Set<Player> pendingPlayers) {
-        this.pendingPlayers = pendingPlayers;
-        return this;
-    }
 }
