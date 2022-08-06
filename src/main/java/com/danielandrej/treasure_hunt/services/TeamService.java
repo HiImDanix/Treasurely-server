@@ -148,7 +148,7 @@ public class TeamService {
         // Check if the player is already invited to the team
         if (team.get().getInvitedPlayers().contains(player.get())) {
             team.get().getInvitedPlayers().remove(player.get());
-            team.get().getPlayers().add(player.get());
+            team.get().addPlayer(player.get());
         } else {
             team.get().getInvitedPlayers().add(player.get());
         }

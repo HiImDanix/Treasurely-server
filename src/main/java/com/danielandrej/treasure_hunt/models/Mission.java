@@ -1,9 +1,12 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -13,7 +16,10 @@ import java.util.Objects;
 
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @ToString
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Mission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +28,7 @@ public class Mission {
     @Column(nullable = false)
     @NotEmpty
     private String qrCodeValue;
-    @JsonBackReference
+
     @ManyToOne
     @NotNull
     private Game game;
@@ -56,15 +62,4 @@ public class Mission {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Mission{" +
-                "id=" + id +
-                ", qrCodeValue='" + qrCodeValue + '\'' +
-                ", game=" + game +
-                ", description='" + description + '\'' +
-                ", locationHint=" + locationHint +
-                ", points=" + points +
-                '}';
-    }
 }

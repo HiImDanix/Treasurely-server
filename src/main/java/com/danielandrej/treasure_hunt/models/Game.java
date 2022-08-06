@@ -1,10 +1,13 @@
 package com.danielandrej.treasure_hunt.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -15,7 +18,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @ToString
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Game {
 
     /* Status of the game */
@@ -49,7 +55,6 @@ public class Game {
     private Set<@NotNull Mission> missions = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
     @NotNull
-    @JsonManagedReference
     private Set<Player> players = new HashSet<>();
     @NotNull
     private Status status = Status.NOT_STARTED;
@@ -72,15 +77,4 @@ public class Game {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Game{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", missions=" + missions +
-                ", players=" + players +
-                ", status=" + status +
-                '}';
-    }
 }

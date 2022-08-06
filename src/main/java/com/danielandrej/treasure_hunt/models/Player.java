@@ -1,9 +1,12 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +15,10 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @ToString
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Player {
 
     @Id
@@ -27,7 +33,6 @@ public class Player {
     @ManyToOne(cascade = CascadeType.ALL)
     private Team team;
     @ManyToOne
-    @JsonBackReference
     @NotNull
     private Game game;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
@@ -56,15 +61,9 @@ public class Player {
         return Objects.hash(sessionID);
     }
 
-    @Override
-    public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", sessionID='" + sessionID + '\'' +
-                ", name='" + name + '\'' +
-                ", team=" + team +
-                ", game=" + game +
-                ", playerGameState=" + playerGameState +
-                '}';
+    public void setTeam(Team team) {
+        this.team = team;
+        team.getPlayers().add(this);
     }
+
 }

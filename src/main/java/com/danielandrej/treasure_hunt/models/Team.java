@@ -1,9 +1,12 @@
 package com.danielandrej.treasure_hunt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -13,7 +16,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @ToString
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Team {
 
     @Id
@@ -25,40 +31,30 @@ public class Team {
     private String name;
     @OneToOne(optional = false)
     @NotNull
-    @JsonBackReference
     private Player leader;
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     @NotNull
-    @JsonBackReference
     private Set<@NotNull Player> players = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @NotNull
     private PlayerGameState playerGameState = new PlayerGameState();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JsonBackReference
     private Set<@NotNull Player> invitedPlayers = new HashSet<>();
 
     // players that have asked/requested to join the team
     @OneToMany(cascade = CascadeType.ALL)
-    @JsonBackReference
     private Set<@NotNull Player> pendingPlayers = new HashSet<>();
 
     public Team(String name, Player leader) {
         this.name = name;
         this.leader = leader;
-        this.players.add(leader);
+        this.getPlayers().add(leader);
     }
 
-    @Override
-    public String toString() {
-        return "Team{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", leader=" + leader +
-                ", players=" + players +
-                ", playerGameState=" + playerGameState +
-                '}';
+    public void addPlayer(Player player) {
+        this.getPlayers().add(player);
+        player.setTeam(this);
     }
 
 }

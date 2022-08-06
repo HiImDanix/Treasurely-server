@@ -1,14 +1,20 @@
 package com.danielandrej.treasure_hunt.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @ToString
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class LocationHint {
 
     @Id
@@ -23,15 +29,5 @@ public class LocationHint {
         this.latitude = latitude;
         this.longitude = longitude;
         this.radiusMeters = radiusMeters;
-    }
-
-    @Override
-    public String toString() {
-        return "LocationHint{" +
-                "id=" + id +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", radiusMeters=" + radiusMeters +
-                '}';
     }
 }
